@@ -13,4 +13,7 @@ export class User {
 
   @Column()
   password: string; // hashed password
+
+  @Column({ default: false })
+  isAdmin: boolean;
 }
