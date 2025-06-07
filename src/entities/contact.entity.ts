@@ -19,4 +19,6 @@ export class Contact {
   message: string;
   @CreateDateColumn()
   createdAt: Date;
+  @Column({ nullable: true })
+  nationality: string;
 }

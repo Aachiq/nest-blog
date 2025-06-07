@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
   username: 'root',
   password: 'M.ysql@123',
   database: 'blog_db',
-  entities: [User],
+  entities: [User, Contact],
   migrations: ['src/migrations/*.ts'],
   synchronize: false,
 });

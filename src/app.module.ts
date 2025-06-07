@@ -17,7 +17,7 @@ import { User } from './entities/user.entity';
       username: 'root',
       password: 'M.ysql@123',
       database: 'blog_db',
-      entities: [User],
+      entities: [User, Contact],
       synchronize: false,
     }),
   ],
