@@ -23,7 +23,6 @@ import { Category } from './entities/category.entity';
       entities: [User, Contact, Category],
       synchronize: false,
     }),
-    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
