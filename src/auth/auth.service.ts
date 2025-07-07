@@ -1,10 +1,18 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { SignUpRequestDto } from './dto/signup-request.dto';
 import { SignUpResponseDto } from './dto/signup-response.dto';
 import { User } from 'src/entities/user.entity';
+import { SignInRequestDto } from './dto/signin-request.dto';
+import { SignInResponseDto } from './dto/signin-response.dto';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -51,5 +59,39 @@ export class AuthService {
     // to match SignUpResponseDto
     const createdUserResponse = new SignUpResponseDto(user);
     return createdUserResponse;
+  }
+
+  async signin(dtoLogin: SignInRequestDto): Promise<SignInResponseDto> {
+    const { email, password } = dtoLogin;
+    const existingUser = await this.findByEmail(email);
+    if (!existingUser) {
+      throw new ConflictException('User Email not Exist !');
+    }
+
+    // check if password identic
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      existingUser.password,
+    ); // Compare passwords
+    if (!isPasswordValid) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    // Generate JWT
+    const { id, email: emailExistDb, name } = existingUser;
+    const token = jwt.sign(
+      { sub: id, email: emailExistDb },
+      'my_secret_123',
+      { expiresIn: '1d' }, // or any expiration
+    );
+    // return User info without password but sent JWT token
+    // const { password: _, ...userWithoutPassword } = existingUser;
+
+    // const responseUserData = {
+    //   ...userWithoutPassword,
+    //   token,
+    // };
+
+    return new SignInResponseDto(id, name, email, token);
   }
 }
