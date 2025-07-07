@@ -2,6 +2,7 @@
 import { DataSource } from 'typeorm';
 import { Contact } from './entities/contact.entity';
 import { User } from './entities/user.entity';
+import { Category } from './entities/category.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -10,7 +11,7 @@ export const AppDataSource = new DataSource({
   username: 'root',
   password: 'M.ysql@123',
   database: 'blog_db',
-  entities: [User, Contact],
+  entities: [User, Contact, Category],
   migrations: ['src/migrations/*.ts'],
   synchronize: false,
 });
