@@ -84,13 +84,6 @@ export class AuthService {
       'my_secret_123',
       { expiresIn: '1d' }, // or any expiration
     );
-    // return User info without password but sent JWT token
-    // const { password: _, ...userWithoutPassword } = existingUser;
-
-    // const responseUserData = {
-    //   ...userWithoutPassword,
-    //   token,
-    // };
 
     return new SignInResponseDto(id, name, email, token);
   }
