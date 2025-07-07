@@ -20,16 +20,16 @@ export class AuthService {
   private async create(userDto: SignUpRequestDto): Promise<User> {
     const { name, email, password } = userDto;
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    // #########
     // behind scene this method "create" instance new object from SignUpRequestDto class
-    // User user = new User();
-    // // dto gotten from params of method it's like "userDto"
-    // // since "userDto" is a class so before we pass object to method as params , we instance this
-    // // object frist from class userDto and we pass it to service "cretaeuSerService(user dtoUser)"
+    // User user = new User(); // this calss of Entity, we instance object from Entity
+    // dto gotten from create function params of method it's like "userDto" of SignUpRequestDto
+    // since "userDto" of SignUpRequestDto is a class so before we pass object to function as parameters , we instance this
+    // object frist from class userDto of SignUpRequestDto and we pass it to service "cretaeuSerService(user dtoUser)"
     // user.setName(dto.getName())
     // user.setEmail(dto.getEmail())
     // user.setAge(dto.getAge())
-    //
+    // #########
 
     const createdUser = this.usersRepository.create({
       name,
@@ -40,13 +40,16 @@ export class AuthService {
   }
 
   async signup(dto: SignUpRequestDto): Promise<SignUpResponseDto> {
-    const { name, email, password } = dto;
+    const { email } = dto;
     const existingUser = await this.findByEmail(email);
     if (existingUser) {
       throw new ConflictException('Email already in use');
     }
 
     const user = await this.create(dto);
-    return new SignUpResponseDto(user);
+    // here user has type of User Record I need to extract password & add token
+    // to match SignUpResponseDto
+    const createdUserResponse = new SignUpResponseDto(user);
+    return createdUserResponse;
   }
 }

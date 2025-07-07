@@ -7,11 +7,13 @@ import { Contact } from './entities/contact.entity';
 import { User } from './entities/user.entity';
 import { CategoriesModule } from './categories/categories.module';
 import { Category } from './entities/category.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ContactModule,
     CategoriesModule,
+    AuthModule,
     // is this necessary needed to use migrations
     TypeOrmModule.forRoot({
       type: 'mysql',

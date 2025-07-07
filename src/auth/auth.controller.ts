@@ -8,6 +8,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
+  // ### Why using promise ?
   async signup(@Body() dto: SignUpRequestDto): Promise<SignUpResponseDto> {
     return this.authService.signup(dto);
   }
