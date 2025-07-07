@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CreateContactDto {
   @IsNotEmpty()
-  fullName: string;
+  fullname: string; // this names should be written with the same way of database
 
   @IsEmail()
   email: string;
@@ -12,4 +12,7 @@ export class CreateContactDto {
 
   @IsNotEmpty()
   message: string;
+
+  @IsNotEmpty()
+  nationality: string;
 }
