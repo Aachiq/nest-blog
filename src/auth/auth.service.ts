@@ -3,6 +3,7 @@ import {
   ConflictException,
   HttpException,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,6 +14,7 @@ import { User } from 'src/entities/user.entity';
 import { SignInRequestDto } from './dto/signin-request.dto';
 import { SignInResponseDto } from './dto/signin-response.dto';
 import * as jwt from 'jsonwebtoken';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -61,7 +63,10 @@ export class AuthService {
     return createdUserResponse;
   }
 
-  async signin(dtoLogin: SignInRequestDto): Promise<SignInResponseDto> {
+  async signin(
+    dtoLogin: SignInRequestDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<SignInResponseDto> {
     const { email, password } = dtoLogin;
     const existingUser = await this.findByEmail(email);
     if (!existingUser) {
@@ -85,6 +90,14 @@ export class AuthService {
       { expiresIn: '1d' }, // or any expiration
     );
 
-    return new SignInResponseDto(id, name, email, token);
+    // Set the token as a cookie
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    return new SignInResponseDto(id, name, email);
   }
 }
