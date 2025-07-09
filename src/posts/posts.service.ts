@@ -18,9 +18,29 @@ export class PostsService {
     });
   }
 
-  //   findOne(id: number): Promise<Post> {
-  //     return this.postsRepository.findOneBy({ id });
-  //   }
+  // keep here adding 'null'
+  findPostById(id: number): Promise<Post | null> {
+    return this.postsRepository.findOne({
+      where: { id: id },
+      relations: ['id_category'],
+    });
+  }
+
+  findPostsByCategory(idCategory: number): Promise<Post[]> {
+    // this return only posts withoutut including categiry data object
+    // return this.postsRepository.find();
+    return this.postsRepository.find({
+      // where: {
+      //     id_category: idCategory
+      // },
+      where: {
+        id_category: {
+          id: idCategory,
+        },
+      },
+      relations: ['id_category'],
+    });
+  }
 
   //   create(post: Partial<Post>): Promise<Post> {
   //     const newPost = this.postsRepository.create(post);
