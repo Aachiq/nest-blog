@@ -1,7 +1,7 @@
 import { User } from 'src/entities/user.entity';
 
 export class SignUpResponseDto {
-  id: string;
+  id: number;
   name: string;
   email: string;
   // token: string; // the token is used in signin not signup

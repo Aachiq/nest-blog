@@ -10,6 +10,8 @@ import { Category } from './entities/category.entity';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { Post } from './entities/post.entity';
+import { CommentsModule } from './comments/comments.module';
+import { Comment } from './entities/comment.entity';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { Post } from './entities/post.entity';
     CategoriesModule,
     AuthModule,
     PostsModule,
+    CommentsModule,
     // is this necessary needed to use migrations
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -25,7 +28,7 @@ import { Post } from './entities/post.entity';
       username: 'root',
       password: 'M.ysql@123',
       database: 'blog_db',
-      entities: [User, Contact, Category, Post],
+      entities: [User, Contact, Category, Post, Comment],
       synchronize: false,
     }),
   ],

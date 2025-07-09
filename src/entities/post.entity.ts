@@ -1,11 +1,12 @@
 import {
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
+import { Comment } from './comment.entity';
 
 @Entity('posts')
 export class Post {
@@ -22,4 +23,7 @@ export class Post {
   // image: string;
   @ManyToOne(() => Category, (category) => category.posts)
   id_category: Category;
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }

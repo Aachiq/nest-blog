@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Comment } from './comment.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   name: string;
@@ -13,4 +14,7 @@ export class User {
 
   @Column()
   password: string; // hashed password
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }
